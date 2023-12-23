@@ -21,24 +21,26 @@
         <label for="exibir_unidades">Exibir unidades fechadas</label>
       </div>
       <div class="results">
-        <p>Resultados enconrtados: <strong>{{ unidades.length }}</strong></p>
+        <p>Resultados enconrtados: <strong>{{ totalResultados }}</strong></p>
       </div>
     </div>
     <div class="form-item buttons">
       <button class="enviar">Encontrar Unidade</button>
-      <button class="limpar">Limpar</button>
+      <button class="limpar" type="reset">Limpar</button>
     </div>
   </form>
   </div>
 
-  <div class="container">    
-    <div v-for="unidade in unidades">
-      <div class="unidade" :key="unidade.id">
-        <h3>{{ unidade.title }}</h3>
-        <p><strong>Está aberta?</strong> {{ unidade.opened }}</p>
-        <p><strong>Uso de máscara:</strong> {{ unidade.mask }}</p>
+  <div class="container">   
+    <div v-if="filtroUnidades">
+      <div v-for="unidade in filtroUnidades">
+        <div class="unidade" :key="unidade.id">
+          <h3>{{ unidade.title }}</h3>
+          <p><strong>Está aberta?</strong> {{ unidade.opened }}</p>
+          <p><strong>Uso de máscara:</strong> {{ unidade.mask }}</p>
+        </div>
       </div>
-    </div>
+    </div>     
   </div>
 </template>
 
@@ -50,25 +52,25 @@ export default {
       periodo: '',
       exibir_unidades: '', 
       unidades: [],
-      length: '0'
+      filtroUnidades: '',
+      totalResultados: '0'
     }
   },
   methods:{
-    handleForm(){
-      fetch('https://test-frontend-developer.s3.amazonaws.com/data/locations.json')
-      .then(res => res.json())
-      .then(res => {
-        if(this.exibir_unidades){
-          this.unidades = res.locations
-        }else{
-          this.unidades = res.locations.filter(unidade => (unidade.opened == true));        
+    handleForm(){      
+        if(this.exibir_unidades){          
+          this.filtroUnidades = this.unidades          
+        }else{          
+          this.filtroUnidades = this.unidades.filter(unidade => (unidade.opened == true));
         }
-      })
-      .catch(error => console.log(error.message));      
+        this.totalResultados = this.filtroUnidades.length
     }
   },
   mounted() {    
-    console.log(this.unidades.length)
+    fetch('https://test-frontend-developer.s3.amazonaws.com/data/locations.json')
+    .then(res => res.json())
+    .then(res => { this.unidades = res.locations })
+    .catch(error => console.log(error.message));     
   }
 }
 </script>
