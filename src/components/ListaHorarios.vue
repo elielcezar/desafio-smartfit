@@ -16,12 +16,12 @@
       <input type="radio" name="periodo" v-model="periodo" id="noite" value="noite">
       <label for="noite">Noite <span>18:01 às 23:00</span></label>
     </div>
-    <div class="form-item">
-      <div class="opcoes">
+    <div class="form-item opcoes">
+      <div class="exibir">
         <input type="checkbox" name="exibir_unidades" value="sim" id="exibir_unidades" v-model="exibir_unidades">
         <label for="exibir_unidades">Exibir unidades fechadas</label>
       </div>
-      <div class="results">
+      <div class="resultados">
         <p>Resultados enconrtados: <strong>{{ totalResultados }}</strong></p>
       </div>
     </div>
@@ -32,12 +32,14 @@
   </form>
 
   <Legendas/>
-  
+    
   <div v-if="filtroUnidades">
-    <div v-for="unidade in filtroUnidades">
-      <CardUnidade :unidade="unidade" />
-    </div>
-  </div>   
+    <div id="unidades">
+      <div v-for="unidade in filtroUnidades">
+        <CardUnidade :unidade="unidade" />
+      </div>
+    </div>  
+  </div> 
 
   </div>
 </template>
@@ -170,6 +172,18 @@ export default {
     margin-left: 5px;    
   }
 
+  .form-item.opcoes{
+    display: flex;
+    justify-content: space-between;
+  }
+  .form-item .exibir{
+    display: flex;    
+    align-items: center;
+  }
+  .form-item .resultados strong{
+    font-size: 1.3rem;
+    font-family: 'Gotham Bold'
+  }
   .form-item.buttons{
     display: flex;
     justify-content: center;
@@ -199,4 +213,14 @@ export default {
     color: #fff;
     border: 2px solid var(--dark-grey)
   }
+
+#unidades{
+  display: flex;
+  flex-wrap: wrap;
+}
+#unidades > div{
+  width: 100%;
+  max-width: 33.33%;
+  padding: 1.5%;  
+}
 </style>

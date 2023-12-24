@@ -33,7 +33,7 @@ export default {
 <style scoped>
 
 #legendas{
-  padding: 10px; 
+  padding: 20px 10px; 
   background: #f5f5f5;
   display: flex;
   flex-wrap: wrap;
