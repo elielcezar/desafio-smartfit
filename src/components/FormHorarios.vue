@@ -58,13 +58,63 @@ export default {
     }
   },
   methods:{
-    handleForm(){      
-        if(this.exibir_unidades){          
-          this.filtroUnidades = this.unidades          
-        }else{          
-          this.filtroUnidades = this.unidades.filter(unidade => (unidade.opened == true));
+    handleForm(){     
+
+        // monta o array de unidades abertas pela manha
+        const unidadesManha = []
+        this.unidades.forEach(function(unidade){          
+          if(unidade.schedules){     
+              const firstTwoChars = parseInt(unidade.schedules[0].hour.slice(0, 2));   
+              if(firstTwoChars < 12){                 
+                unidadesManha.push(unidade);                
+              }  
+          }else{
+            unidade.schedules = null
+          }
+        });
+
+        // monta o array de unidades abertas pela tarde
+        const unidadesTarde = []
+        this.unidades.forEach(function(unidade){          
+          if(unidade.schedules){                   
+              const lastThreeChars = parseInt(unidade.schedules[0].hour.slice(-3).slice('h'));                            
+              if(lastThreeChars > 12){
+                unidadesTarde.push(unidade)                
+              }    
+          }else{
+            unidade.schedules = null
+          }
+        });
+
+        // monta o array de unidades abertas pela noite
+        const unidadesNoite = []
+        this.unidades.forEach(function(unidade){          
+          if(unidade.schedules){                   
+              const lastThreeChars = parseInt(unidade.schedules[0].hour.slice(-3).slice('h'));                            
+              if(lastThreeChars > 18){                
+                unidadesNoite.push(unidade)
+              }  
+          }else{
+            unidade.schedules = null
+          }
+        });
+
+        if(this.periodo == 'manha'){                           
+          this.filtroUnidades = unidadesManha.filter(unidade => (unidade.opened == true));
+        }else if((this.periodo == 'manha') && (this.exibir_unidades)){
+          this.filtroUnidades = unidadesManha
+        }else if(this.periodo == 'tarde'){          
+          this.filtroUnidades = unidadesTarde.filter(unidade => (unidade.opened == true));
+        }else if((this.periodo == 'tarde') && (this.exibir_unidades)){
+          this.filtroUnidades = unidadesManha
+        }else if(this.periodo == 'noite'){          
+          this.filtroUnidades = unidadesNoite.filter(unidade => (unidade.opened == true));
+        }else if((this.periodo == 'noite') && (this.exibir_unidades)){
+          this.filtroUnidades = unidadesNoite
         }
-        this.totalResultados = this.filtroUnidades.length
+        
+        // exibe o total de resultados obtidos
+        this.totalResultados = this.filtroUnidades.length; 
     }
   },
   mounted() {    
