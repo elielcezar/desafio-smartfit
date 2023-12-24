@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <MainHeader/>
-    <FormHorarios/>        
+    <ListaHorarios/>        
     <MainFooter/>
   </div>
 </template>
@@ -9,7 +9,7 @@
 <script>
 
 import MainHeader from '@/components/MainHeader.vue';
-import FormHorarios from '@/components/FormHorarios.vue';
+import ListaHorarios from '@/components/ListaHorarios.vue';
 //import Legendas from '@/components/Legendas.vue';
 //import ListaResultados from '@/components/ListaResultados.vue';
 import MainFooter from '@/components/MainFooter.vue';
@@ -19,7 +19,7 @@ export default {
   name: 'HomeView',
   components: {
     MainHeader,
-    FormHorarios,
+    ListaHorarios,
     //Legendas,
     //ListaResultados,
     MainFooter

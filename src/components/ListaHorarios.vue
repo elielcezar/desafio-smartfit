@@ -1,6 +1,8 @@
 <template>
-  <form @submit.prevent="handleForm">
-    <h4>Horário</h4>
+
+  <div class="container">
+    <form @submit.prevent="handleForm">
+    <h4>Horário 65465</h4>
     <h3>Em qual período quer treinar?</h3>
     <div class="form-item">
       <input type="radio" name="periodo" v-model="periodo" id="manha" value="manha">
@@ -25,15 +27,30 @@
     </div>
     <div class="form-item buttons">
       <button class="enviar">Encontrar Unidade</button>
-      <button class="limpar" type="reset">Limpar</button>
+      <button class="limpar" type="reset" @click="clearData">Limpar</button>
     </div>
   </form>
+
+  <Legendas/>
+  
+  <div v-if="filtroUnidades">
+    <div v-for="unidade in filtroUnidades">
+      <CardUnidade :unidade="unidade" />
+    </div>
+  </div>   
+
+  </div>
 </template>
 
 <script>
+
+import CardUnidade from './CardUnidade.vue'
+import Legendas from './Legendas.vue'
+
 export default {
-name: 'FormHorarios',
-data(){
+  name: 'ListaHorarios',
+  components: {CardUnidade, Legendas},
+  data(){
     return{
       periodo: '',
       exibir_unidades: '', 
@@ -43,7 +60,11 @@ data(){
     }
   },
   methods:{
-    handleForm(){     
+    clearData(){
+      this.filtroUnidades = '',
+      this.totalResultados = '0'
+    },
+    handleForm(){  
 
         // monta o array de unidades abertas pela manha
         const unidadesManha = []
@@ -111,6 +132,71 @@ data(){
 }
 </script>
 
-<style>
+<style scoped>
+  form{
+    width: 100%;
+    padding: 25px;
+    border: 4px solid var(--lighter-grey);
+    border-radius: 9px;
+  }
 
+  form h4{
+    font-size: .85rem;
+    color: var(--light-grey);
+    font-family: 'Gotham Light';
+  }
+
+  form h3{
+    font-size: 1.25rem;
+    color: var(--light-grey);
+    font-family: 'Gotham Light';
+    padding: 15px 0;
+    margin: 0;
+    border-bottom: 2px solid var(--lighter-grey);
+  }
+
+  .form-item{
+    width: 100%;
+    padding: 15px 0;
+    margin: 10px 0;
+    border-bottom: 2px solid var(--lighter-grey);
+    color: var(--light-grey);
+    display: flex;    
+  }
+  .form-item label{
+    display: flex;
+    justify-content: space-between;
+    flex-grow: 1;
+    margin-left: 5px;    
+  }
+
+  .form-item.buttons{
+    display: flex;
+    justify-content: center;
+  }
+
+  button{
+    display: inline-block;
+    padding: 15px;
+    border: none;
+    border: 2px solid var(--lighter-grey);
+    color: #000;
+    text-transform: uppercase;
+    font-family: 'Gotham Bold';
+    font-size: .9rem;
+    letter-spacing: 1px;
+    background: #fff;
+    min-width: 30%;
+    margin: 0 5%;
+    transition: all .3s;
+  }
+  button.enviar{
+    background: var(--yellow);
+    border: 2px solid var(--yellow)
+  }
+  button:hover{
+    background: var(--dark-grey);
+    color: #fff;
+    border: 2px solid var(--dark-grey)
+  }
 </style>
